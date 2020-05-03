@@ -1,81 +1,62 @@
-CREATE DATABASE concessionaria;
-USE concessionaria;
-
-CREATE TABLE Ano(
-idAno int AUTO_INCREMENT,
-ano int(4) NOT NULL,
-PRIMARY KEY (idAno)
+CREATE DATABASE concessionaria_ac4;
+USE concessionaria_ac4;
+CREATE TABLE Ano (
+	idAno INT NOT NULL AUTO_INCREMENT,
+	ano INT(4) NOT NULL,
+	PRIMARY KEY (idAno)
 );
 
-CREATE TABLE Mes(
-idMes int AUTO_INCREMENT,
-mes int(2) NOT NULL,
-PRIMARY KEY (idMes)
+CREATE TABLE Mes (
+	idMes INT NOT NULL AUTO_INCREMENT,
+	mes INT(2) NOT NULL,
+	PRIMARY KEY (idMes)
 );
 
-CREATE TABLE VendasAnuais(
-idVendas int AUTO_INCREMENT,
-qtd int(4) NOT NULL,
-idVeiculo int NOT NULL,
-idAnodaVenda int NOT NULL,
-idMesdaVenda int NOT NULL,
-PRIMARY KEY (idVendas)
+CREATE TABLE Veiculo (
+	idVeiculo INT NOT NULL AUTO_INCREMENT,
+	descricao TEXT(500),
+	valor FLOAT(15) NOT NULL,
+	idModelo INT NOT NULL,
+	idFabricante INT NOT NULL,
+	idAnoFabricacao INT NOT NULL,
+	dataCompra DATETIME NOT NULL,
+	PRIMARY KEY (idVeiculo)
 );
 
-CREATE TABLE Modelo(
-idModelo int AUTO_INCREMENT,
-Descricao varchar(500) NOT NULL,
-PRIMARY KEY (idModelo)
+CREATE TABLE VendasAnuais (
+	idVendas INT NOT NULL AUTO_INCREMENT,
+	qtd INT(80) NOT NULL,
+	idVeiculo INT NOT NULL,
+	idAnodaVenda INT NOT NULL,
+	idMesdaVenda INT NOT NULL,
+	PRIMARY KEY (idVendas)
 );
 
-CREATE TABLE Fabricante(
-idFabricante int AUTO_INCREMENT,
-Nome varchar(30) NOT NULL,
-cidade varchar (50) NOT NULL,
-endereco varchar (150),
-UF varchar (2) NOT NULL,
-telefone int (14),
-contato varchar (30),
-PRIMARY KEY (idFabricante)
+CREATE TABLE Modelo (
+	idModelo INT NOT NULL AUTO_INCREMENT,
+	Descricao TEXT(500),
+	PRIMARY KEY (idModelo)
 );
 
-CREATE TABLE Veiculo(
-idVeiculo int auto_increment,
-Descricao text,
-valor int (10) NOT NULL,
-idModelo int NOT NULL,
-idFabricante int NOT NULL,
-idAnoFabricacao int,
-dataCompra date NOT NULL,
-PRIMARY KEY (idVeiculo)
+CREATE TABLE Fabricante (
+	idFabricante INT NOT NULL AUTO_INCREMENT,
+	nome varchar(25) NOT NULL,
+	cidade varchar(50) NOT NULL,
+	endereco varchar(150) NOT NULL,
+	UF varchar(2) NOT NULL,
+	telefone varchar(20) NOT NULL,
+	contato varchar(40) NOT NULL,
+	PRIMARY KEY (idFabricante)
 );
 
-ALTER TABLE Veiculo 
-add constraint fk_veiculo_modelo 
-foreign key (idModelo) 
-references Modelo (idModelo);
+ALTER TABLE Veiculo ADD CONSTRAINT Veiculo_fk0 FOREIGN KEY (idModelo) REFERENCES Modelo(idModelo);
 
-ALTER TABLE Veiculo 
-add constraint fk_veiculo_fabricante 
-foreign key (idFabricante) 
-references Fabricante (idFabricante);
+ALTER TABLE Veiculo ADD CONSTRAINT Veiculo_fk1 FOREIGN KEY (idFabricante) REFERENCES Fabricante(idFabricante);
 
-ALTER TABLE Veiculo 
-add constraint fk_veiculo_ano 
-foreign key (idAnoFabricacao) 
-references Ano (idAno);
+ALTER TABLE Veiculo ADD CONSTRAINT Veiculo_fk2 FOREIGN KEY (idAnoFabricacao) REFERENCES Ano(idAno);
 
-ALTER TABLE VendasAnuais
-add constraint fk_vendas_veiculo
-foreign key (idVeiculo)
-references Veiculo (idVeiculo);
+ALTER TABLE VendasAnuais ADD CONSTRAINT VendasAnuais_fk0 FOREIGN KEY (idVeiculo) REFERENCES Veiculo(idVeiculo);
 
-ALTER TABLE VendasAnuais
-add constraint fk_vendas_Ano
-foreign key (idAnodaVenda)
-references Ano (idAno);
+ALTER TABLE VendasAnuais ADD CONSTRAINT VendasAnuais_fk1 FOREIGN KEY (idAnodaVenda) REFERENCES Ano(idAno);
 
-ALTER TABLE VendasAnuais
-add constraint fk_vendas_Mes
-foreign key (idMesdaVenda)
-references Mes (idMes);
+ALTER TABLE VendasAnuais ADD CONSTRAINT VendasAnuais_fk2 FOREIGN KEY (idMesdaVenda) REFERENCES Mes(idMes);
